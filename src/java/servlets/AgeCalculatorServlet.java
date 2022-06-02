@@ -26,25 +26,23 @@ public class AgeCalculatorServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        boolean doCalculation = true;
+        boolean validInput = true;
         // Capture the incoming parameters from JSP
         String age = request.getParameter("age");
 
         if (age.isEmpty()) {
-            doCalculation = false;
+            validInput = false;
             request.setAttribute("message", "You must give your current age.");
-        }
-
-        if (!isValidNumber(age)) {
-            doCalculation = false;
+        } else if (!isValidNumber(age)) {
+            validInput = false;
             request.setAttribute("message", "You must enter a number.");
         }
 
-        if (doCalculation) {
+        if (validInput) {
             // If not message was defined, the age is valid to start calculations
             int age_i = Integer.parseInt(age);
             age_i++;
-            request.setAttribute("age", age_i);
+            request.setAttribute("age", ""); // Clear the input
             request.setAttribute("message", String.format("Your age next birthday will be %d", age_i));
         }
 
